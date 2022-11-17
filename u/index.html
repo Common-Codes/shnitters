@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-firestore.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Shnitters</title>
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyDVQ7--Bysg-LYpi5aKHnDbwpcKH9bcdcU",
+        authDomain: "shnitters.firebaseapp.com",
+        projectId: "shnitters",
+        storageBucket: "shnitters.appspot.com",
+        messagingSenderId: "969301850282",
+        appId: "1:969301850282:web:1455215055a73b910af8d3",
+        measurementId: "G-LZQ6NGR1Y0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const store = firebase.firestore();
+    store.settings({ timestampsInSnapshots: true });
+    </script>
+</head>
+<body class="black" style="background-color: black; color: whitesmoke;">
+
+    <nav class="z-depth-0 grey darken-4">
+        <div class="nav-wrapper container">
+            <a href="/" class="brand-logo left">
+                <h5>Shnitters</h5>
+            </a>
+            <ul class="right hide-on-med">
+                <li class="logged-in">New Post</li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="profile" style="position: absolute; top: 13%; left: 9px; width: 99%;"></div>
+
+    <script>
+        const fragment = new URLSearchParams(window.location.search.slice(1));
+        const user = fragment.get('u');
+        if(user != null){
+            store.collection("users").where("username", "==", user).get().then((querySnaphot) => {
+                querySnaphot.forEach((doc) => {
+                    const pro = doc.data();
+                    document.getElementById("profile").innerHTML += `<img src="${pro.pfp}" style="position: relative; top: 10px; left: 12px; width: 64px; height: 64px;"><b style="width: 50%; cursor: default; position: relative; top: -36px; left: 50px;">${pro.username}</b><p style="width: 50%; color: gray; font-size: 10px; position: relative; top: -48px; left: 99px;">@${pro.handle}</p>`
+                })
+            })
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
