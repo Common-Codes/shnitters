@@ -42,7 +42,7 @@
         const fragment = new URLSearchParams(window.location.search.slice(1));
         const user = fragment.get('u');
         if(user != null){
-            store.collection("users").where("username", "==", user).get().then((querySnaphot) => {
+            store.collection("users").where("handle", "==", user).get().then((querySnaphot) => {
                 querySnaphot.forEach((doc) => {
                     const pro = doc.data();
                     document.getElementById("profile").innerHTML += `<img src="${pro.pfp}" style="position: relative; top: 10px; left: 12px; width: 64px; height: 64px;"><b style="width: 50%; cursor: default; position: relative; top: -36px; left: 50px;">${pro.username}</b><p style="width: 50%; color: gray; font-size: 10px; position: relative; top: -48px; left: 99px;">@${pro.handle}</p>`
