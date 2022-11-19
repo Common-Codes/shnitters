@@ -1,3 +1,12 @@
+const loggedOutLinks = document.querySelectorAll('.logged-out');
+const loggedInLinks = document.querySelectorAll('.logged-in');
+const accountDetails = document.querySelector('.account-details');
+let handle = ``
+let image = ``
+let xyzname = ``
+let veryvery = ``
+
+
 store.collection('status').get().then(snapshot => {
     liveReload(snapshot.docs);
 });
@@ -24,6 +33,30 @@ const liveReload = (data) => {
         html += update;
     });
     document.getElementById("feed").innerHTML = html;
+}
+
+const setupUI = (user) => {
+    if(user){
+        store.collection('users').doc(user.uid).get().then(doc => {
+            handle = `${doc.data().handle}`;
+            image = `${doc.data().pfp}`;
+            xyzname = `${doc.data().username}`;
+            veryvery = `${doc.data().very}`
+
+            const html = `
+                <div><img src="${doc.data().pfp}" title="Profile Image" style="height: 48px; width: 48px; border-radius: 50%;"></div>
+                <div>Logged in as ${doc.data().username}</div>${doc.data().very}
+                <div><p style="color: gray;">Email: ${user.email}</p></div>
+            `;
+            accountDetails.innerHTML = html;
+        })
+        loggedInLinks.forEach(item => item.style.display = 'block');
+        loggedOutLinks.forEach(item => item.style.display = 'none');
+    } else {
+        accountDetails.innerHTML = ''
+        loggedInLinks.forEach(item => item.style.display = 'none');
+        loggedOutLinks.forEach(item => item.style.display = 'block');
+    }
 }
 
 
