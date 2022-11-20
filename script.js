@@ -26,7 +26,7 @@ const liveReload = (data) => {
             </div>
             ${rt.pin}
             <div style="position: relative;">
-                <p style="width: 86.6%; cursor: default; position: relative; left: 10px;">${rt.content}</p>
+                <p style="width: 86.6%; cursor: default; position: relative; left: 10px;"><xmp>${rt.content}</xmp></p>
             </div>
         </div>
         `;
