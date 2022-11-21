@@ -59,13 +59,17 @@ postForm.addEventListener('submit', (e) => {
         If you have a fix, please make a PR at https://codeberg.org/Common-Codes/Shnitters/pulls
     */
     e.preventDefault();
+
+    // this changes raw HTML to it's respective HTML Entities
+    
+    const strung = convertHTML(postForm['post'].value);
+
     store.collection('status').add({
-        content: postForm['post'].value,
+        content: strung,
         handle: handle,
         image: image,
         username: xyzname,
         very: veryvery,
-        pin: '<div style="display: none;">Yes. Seriously.</div>',
         date: d.toDateString()
     }).then(() => {
         const modal = document.querySelector('#modal-create');
@@ -82,3 +86,28 @@ e.preventDefault();
 auth.signOut();
 setTimeout(function(){location.reload()}, 700);
 });
+
+function convertHTML(str) {
+  var HTML = ['&amp;', '&lt;', '&gt;', '&quot;', '&apos;'];
+  let result = str.slice(0);
+
+  for(let i=0; i< str.length; i++) {
+    if(str[i] == '&') {
+      result = result.replace('&', HTML[0]);
+    }
+    if(str[i] == "<") {
+      result = result.replace("<", HTML[1]);
+    }
+    if(str[i] == '>') {
+      result = result.replace('>', HTML[2]);
+    }
+    if (str[i] == '"') {
+      result = result.replace('"', HTML[3]);
+    }
+    if(str[i] == "'") {
+      result = result.replace("'", HTML[4]);
+    }
+  }
+  
+  return result;
+}
