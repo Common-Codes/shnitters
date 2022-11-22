@@ -20,8 +20,8 @@ auth.createUserWithEmailAndPassword(email, password).then(cred => {
   return store.collection('users').doc(cred.user.uid).set({
     username: signupForm['signup-name'].value,
     pfp: 'https://tallerthanshort.github.io/ut3.ggpht/icons/shnitters.jpg',
-    handle: signupForm['signup-hash'].value,
-    very: '<div style="diaply: none;"></div>',
+    handle: `@${signupForm['signup-hash'].value}`,
+    very: '<div style="display: none;"></div>',
   });
 }).then(() => {
   //making people verify emails... maybe...
@@ -89,6 +89,7 @@ setTimeout(function(){location.reload()}, 700);
 
 function convertHTML(str) {
   var HTML = ['&amp;', '&lt;', '&gt;', '&quot;', '&apos;'];
+  // clone input string
   let result = str.slice(0);
 
   for(let i=0; i< str.length; i++) {
