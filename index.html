@@ -37,7 +37,7 @@
 
     <nav class="z-depth-1 grey darken-4">
         <div class="nav-wrapper container">
-            <a href="#" class="brand-logo left">
+            <a href="/index.html" class="brand-logo left">
                 <h5>Shnitters</h5>
             </a>
             <ul class="right hide-on-med">
@@ -112,22 +112,42 @@
       <div id="modal-account" class="modal grey darken-4">
         <div class="modal-content center-align">
           <h4>Account Info</h4><br /><br />
-          <div class="account-details"></div><br /><br />
+          <div class="account-details"></div><br /><hr>
+          <div id="modify-account">
+            <b style="color: blue; margin-top: -40px;" title="These Features are still a Work In Progress">BETA</b><br>
+            <button class="btn cyan darken-4 modal-trigger" data-target="modal-reauth">Modify Account</button>
+          </div>
         </div>
       </div>
 
       <div id="modal-create" class="modal grey darken-4">
         <div class="modal-content">
-          <h4>Create Post</h4>
-          <b style="margin-top: -4px; color: blue; cursor: default;" title="This Feature is still in Beta">BETA</b><br />
+          <h4>Create a Post</h4>
           <form id="create-form">
             <div class="input-field">
-              <textarea style="color: whitesmoke; height: 120px; font-size: 16px;" autocomplete="off" type="text" id="post" maxlength="250" required></textarea>
-              <label for="post">Post Content (max 250 char)</label>
+              <textarea style="color: whitesmoke; height: 120px; font-size: 16px;" autocomplete="off" type="text" id="post" maxlength="300" required></textarea>
+              <label for="post">Post Content (max 300 char)</label>
             </div>
             <button class="btn cyan darken-4 z-depth-1">Create</button>
           </form>
         </div>
+    </div>
+
+    <div id="modal-reauth" class="modal grey darken-4">
+      <div class="modal-content">
+        <h4>Re-Authorise Access to your Account</h4><br />
+        <p id="rerrtext">Let's verify it's you before attempting to modify your account</p>
+        <form id="reauth-form">
+          <div class="input-field">
+            <input style="color: whitesmoke;" type="password" id="reauth-password" required />
+            <label for="reauth-password">Confirm your password</label>
+          </div>
+          <div class="modal-content">
+            <p style="color: red;">By modifying your account, you agree that we cannot in any way revert such change. Your permalink (the one to your account) may permanently change.<br>By continuing this operation, you're also agreeing to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Privacy Policy</span>.<br>Your posts may stay visible under your previous account details due to server-side caching.</p>
+          </div>
+          <button class="btn btn-primary z-depth-0">Authenticate</button>
+        </form>
+      </div>
     </div>
 
     <div id="feed" style="position: absolute; top: 7.5%; right: 9px; width: 95%;">
