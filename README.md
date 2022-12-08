@@ -1,5 +1,5 @@
 # ShnittersPWA
-<img src="https://ggpht.ga/icons/shnitters.jpg" style="width:38px; height:38px;">
+<img src="https://ggpht.ga/icons/shnitters.jpg" style="width:42px; height:42px;">
 
 Shnitters (former packed name: ShnittersPWA)
 
