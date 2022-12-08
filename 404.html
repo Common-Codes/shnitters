@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>404 | Shnitters</title>
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyDVQ7--Bysg-LYpi5aKHnDbwpcKH9bcdcU",
+        authDomain: "shnitters.firebaseapp.com",
+        projectId: "shnitters",
+        storageBucket: "shnitters.appspot.com",
+        messagingSenderId: "969301850282",
+        appId: "1:969301850282:web:1455215055a73b910af8d3",
+        measurementId: "G-LZQ6NGR1Y0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const store = firebase.firestore();
+    store.settings({ timestampsInSnapshots: true });
+    </script>
+</head>
+<body class="black" style="background-color: black; color: whitesmoke;">
+
+    <nav class="z-depth-1 grey darken-4">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo left">
+                <h5>Shnitters</h5>
+            </a>
+            <ul class="right hide-on-med">
+              <li class="logged-out" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-login">Login</a>
+              </li>
+              <li class="logged-out" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-signup">Sign up</a>
+              </li>
+              <li class="logged-in" style="display: none;">
+                <a class="white-text modal-trigger" href="/index.html">Return to Start</a>
+              </li>
+              <li class="logged-in" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-account">Account</a>
+              </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="modal-signup" class="modal grey darken-4">
+        <div class="modal-content">
+          <h4>Sign up</h4><br />
+          <form id="signup-form">
+            <div class="input-field">
+              <input style="color: whitesmoke;" type="email" id="signup-email" required />
+              <label for="signup-email">Email</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" autocomplete="off" type="text" id="signup-name" maxlength="15" required />
+              <label for="signup-name">Username</label>
+            </div>
+            <div class="input-field">
+                <input style="color: whitesmoke;" autocomplete="off" type="text" id="signup-hash" maxlength="15" required />
+                <label for="signup-hash">Handle</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" type="password" id="signup-password" required />
+              <label for="signup-password">Password</label>
+            </div>
+            <div class="modal-content">
+              <p style="color: red;">By continuing using our platform, you agree to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Privacy Policy</span>.</p>
+            </div>
+            <button class="btn cyan darken-4 z-depth-1">Sign up</button>
+          </form>
+        </div>
+    </div>
+
+    <div id="modal-login" class="modal grey darken-4">
+        <div class="modal-content">
+          <h4>Login</h4><br />
+          <p id="errtext" style="color: rgb(205, 50, 50);"></p>
+          <form id="login-form">
+            <div class="input-field">
+              <input type="email" style="color: whitesmoke;" autocomplete="off" id="login-email" required />
+              <label for="login-email">Email</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" autocomplete="off" type="password" id="login-password" required />
+              <label for="login-password">Your password</label>
+            </div>
+            <div class="modal-content">
+              <p style="color: red;">By continuing using our platform, you agree to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Privacy Policy</span>.</p>
+            </div>
+            <button class="btn cyan darken-4 z-depth-0">Login</button>
+          </form>
+        </div>
+      </div>
+
+      <div id="modal-account" class="modal grey darken-4">
+        <div class="modal-content center-align">
+          <h4>Account Info</h4><br /><br />
+          <div class="account-details"></div><br /><br />
+        </div>
+      </div>
+
+      <img src="https://ggpht.ga/icons/shnitters.jpg" style="display: flex; width: 88px; height: 91px; border-radius: 50%;">
+      <div id="errorsza" style="position: absolute; top: 25%; background-color: aliceblue; color: tomato; overflow: hidden;">
+        <h2 style="position: relative; left: 20%;">Hey there!</h2>
+        <h3>You encountered a 404 Error!</h3>
+        <p style="font-size: 6px;">enjoy ;p</p>
+      </div>
+      <script>
+        const errorsza = document.getElementById("errorsza");
+        const wwidth = window.innerWidth;
+        if(wwidth <= 900) {
+          errorsza.innerHTML = `<h2 style="position: relative; left: 20%;">Hey there!</h2><h3>You encountered a 404 Error!</h3><p style="font-size: 8px; position: relative; left: 25%;">A script modified this to be more compatible with your device!</p>`;
+        } else {
+          errorsza.innerHTML = `<h2 style="position: relative; left: 25%;">Hey there!</h2><h3>You encountered a 404 Error!</h3><p style="font-size: 8px; position: relative; left: 35%;">A script modified this to be compatible with your device!</p>`;
+          errorsza.style.left = `35%`
+        }
+      </script>
+
+    <div id="profile" style="position: absolute; top: 9%; left: 9px; width: 95%;"></div>
+    <div id="pistons" style="position: absolute; top: 26%; left: 9px; width: 95%;"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js" defer></script>
+</body>
+</html>
