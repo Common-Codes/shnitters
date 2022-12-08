@@ -1,76 +1,160 @@
-const loggedOutLinks = document.querySelectorAll('.logged-out');
-const loggedInLinks = document.querySelectorAll('.logged-in');
-const accountDetails = document.querySelector('.account-details');
-let handle = ``
-let image = ``
-let xyzname = ``
-let veryvery = ``
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shnitters | Open Source Messaging">
+    <meta property="og:site_name" content="Feed | Shnitters">
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1019547103443292180/1040231079199658024/1668080519-picsay.png?format=webp" type="image/png">
+    <meta property="og:title" content="Feed | Shnitters">
+    <meta property="og:image" content="https://ggpht.ga/icons/shnitters.jpg">
+    <meta property="og:description" content="Feed | Shnitters - Free Open Source Message and Content Sharing!">
+    <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/1019547103443292180/1040231079199658024/1668080519-picsay.png?format=webp">
+    <title>Shnitters</title>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script>
+        const firebaseConfig = {
+        apiKey: "AIzaSyDVQ7--Bysg-LYpi5aKHnDbwpcKH9bcdcU",
+        authDomain: "shnitters.firebaseapp.com",
+        projectId: "shnitters",
+        storageBucket: "shnitters.appspot.com",
+        messagingSenderId: "969301850282",
+        appId: "1:969301850282:web:1455215055a73b910af8d3",
+        measurementId: "G-LZQ6NGR1Y0"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const store = firebase.firestore();
+    store.settings({ timestampsInSnapshots: true });
+    // Worth noting: Firebase Firestore allows some really strict rules, meaning that only YOU can read YOUR personal data.
+    </script>
+</head>
+<body class="black" style="background-color: black; color: whitesmoke;">
 
-
-store.collection('status').get().then(snapshot => {
-    liveReload(snapshot.docs);
-});
-
-const liveReload = (data) => {
-    let html = ``;
-    data.forEach(doc => {
-        const rt = doc.data();
-        const update = `
-        <br>
-        <div style="border: 3px solid; position: realative; right: 0;">
-            <div style="position: relative; top: 6px; left: 10px; width: 100%;">
-                <img src="${rt.image}" style="position: relative; top: 10px; left: 12px; width: 32px; height: 32px; border-radius: 50%;">
-                <p onclick="location.href='/u/?u=${rt.handle}';" style="width: 10%; cursor: pointer; position: relative; top: -40px; left: 51px;">${rt.username}</p>
-                <p onclick="location.href='/u/?u=${rt.handle}';" style="width: 10%; color: gray; font-size: 10px; position: relative; top: -49px; left: 52px; cursor: pointer;">${rt.handle}</p>${rt.very}
-                <p style="width: 8%; color: gray; position: relative; top: -90px; left: 78%;">${rt.date}</p>
-            </div>
-            <div style="position: relative;">
-                <pre style="width: 86.6%; cursor: default; position: relative; left: 10px; white-space: pre-wrap;">${rt.content}</pre>
-            </div>
-            <div class="logged-in" style="position: relative; overflow: hidden;" id="fancy-icons">
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${doc.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${doc.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${doc.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/comment.png?alt=media&token=aef99c51-74c5-4482-9233-ce7524c3dfbc&format=webp" style="height: 18px; width: 18px;"> Conversation</div>
-            </div>
+    <nav style="position: fixed; z-index: 1;" class="z-depth-1 grey darken-4">
+        <div class="nav-wrapper container">
+            <a href="/index.html" class="brand-logo left">
+                <h5>Shnitters</h5>
+            </a>
+            <ul class="right hide-on-med">
+              <li class="logged-out" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-login">Login</a>
+              </li>
+              <li class="logged-out" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-signup">Sign up</a>
+              </li>
+              <li class="logged-in" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-create">Post</a>
+              </li>
+              <li class="logged-in" style="display: none;">
+                <a href="#" class="white-text modal-trigger" data-target="modal-account">Account</a>
+              </li>
+              <li class="logged-in" style="display: none;">
+                  <a href="#" class="white-text" id="logout">Logout</a>
+              </li>
+            </ul>
         </div>
-        `;
-        html += update;
-    });
-    document.getElementById("feed").innerHTML = html;
-}
+    </nav>
 
-const setupUI = (user) => {
-    if(user){
-        store.collection('users').doc(user.uid).get().then(doc => {
-            handle = `${doc.data().handle}`;
-            image = `${doc.data().pfp}`;
-            xyzname = `${doc.data().username}`;
-            veryvery = `${doc.data().very}`
+    <div id="modal-signup" class="modal grey darken-4">
+        <div class="modal-content">
+          <h4>Sign up</h4><br />
+          <form id="signup-form">
+            <div class="input-field">
+              <input style="color: whitesmoke;" type="email" id="signup-email" required />
+              <label for="signup-email">Email</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" autocomplete="off" type="text" id="signup-name" maxlength="15" required />
+              <label for="signup-name">Username</label>
+            </div>
+            <div class="input-field">
+                <input style="color: whitesmoke;" autocomplete="off" type="text" id="signup-hash" maxlength="15" required />
+                <label for="signup-hash">Handle</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" type="password" id="signup-password" required />
+              <label for="signup-password">Password</label>
+            </div>
+            <div class="modal-content">
+              <p style="color: red;">By continuing using our platform, you agree to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Privacy Policy</span>.</p>
+            </div>
+            <button class="btn cyan darken-4 z-depth-1">Sign up</button>
+          </form>
+        </div>
+    </div>
 
-            const html = `
-                <div><img src="${doc.data().pfp}" title="Profile Image" style="height: 48px; width: 48px; border-radius: 50%;"></div>
-                <div>Logged in as ${doc.data().username}</div>${doc.data().very}
-                <div><p style="color: gray;">Email: ${user.email}</p></div>
-            `;
-            accountDetails.innerHTML = html;
-        })
-        loggedInLinks.forEach(item => item.style.display = 'block');
-        loggedOutLinks.forEach(item => item.style.display = 'none');
-    } else {
-        accountDetails.innerHTML = ''
-        loggedInLinks.forEach(item => item.style.display = 'none');
-        loggedOutLinks.forEach(item => item.style.display = 'block');
-    }
-}
+    <div id="modal-login" class="modal grey darken-4">
+        <div class="modal-content">
+          <h4>Login</h4><br />
+          <p id="errtext" style="color: rgb(205, 50, 50);"></p>
+          <form id="login-form">
+            <div class="input-field">
+              <input type="email" style="color: whitesmoke;" autocomplete="off" id="login-email" required />
+              <label for="login-email">Email</label>
+            </div>
+            <div class="input-field">
+              <input style="color: whitesmoke;" autocomplete="off" type="password" id="login-password" required />
+              <label for="login-password">Your password</label>
+            </div>
+            <div class="modal-content">
+              <p style="color: red;">By continuing using our platform, you agree to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/shnitters';">Privacy Policy</span>.</p>
+            </div>
+            <button class="btn cyan darken-4 z-depth-0">Login</button>
+          </form>
+        </div>
+      </div>
 
+      <div id="modal-account" class="modal grey darken-4">
+        <div class="modal-content center-align">
+          <h4>Account Info</h4><br /><br />
+          <div class="account-details"></div><br /><hr>
+          <div id="modify-account">
+            <b style="color: blue; margin-top: -40px;" title="These Features are still a Work In Progress">BETA</b><br>
+            <button class="btn cyan darken-4 modal-trigger" data-target="modal-reauth">Modify Account</button>
+          </div>
+        </div>
+      </div>
 
+      <div id="modal-create" class="modal grey darken-4">
+        <div class="modal-content">
+          <h4>Create a Post</h4>
+          <form id="create-form">
+            <div class="input-field">
+              <textarea style="color: whitesmoke; height: 120px; font-size: 16px;" autocomplete="off" type="text" id="post" maxlength="300" required></textarea>
+              <label for="post">Post Content (max 300 char)</label>
+            </div>
+            <button class="btn cyan darken-4 z-depth-1">Create</button>
+          </form>
+        </div>
+    </div>
 
-document.addEventListener('DOMContentLoaded', function() {
+    <div id="modal-reauth" class="modal grey darken-4">
+      <div class="modal-content">
+        <h4>Re-Authorise Access to your Account</h4><br />
+        <p id="rerrtext">Let's verify it's you before attempting to modify your account</p>
+        <form id="reauth-form">
+          <div class="input-field">
+            <input style="color: whitesmoke;" type="password" id="reauth-password" required />
+            <label for="reauth-password">Confirm your password</label>
+          </div>
+          <div class="modal-content">
+            <p style="color: red;">By modifying your account, you agree that we cannot in any way revert such change. Your permalink (the one to your account) may permanently change.<br>By continuing this operation, you're also agreeing to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Privacy Policy</span>.<br>Your posts may stay visible under your previous account details due to server-side caching.</p>
+          </div>
+          <button class="btn btn-primary z-depth-0">Authenticate</button>
+        </form>
+      </div>
+    </div>
 
-    var modals = document.querySelectorAll('.modal');
-    M.Modal.init(modals);
-  
-    var items = document.querySelectorAll('.collapsible');
-    M.Collapsible.init(items);
-  
-  });
+    <div id="feed" style="position: absolute; top: 7.5%; right: 9px; width: 95%;">
+        <p>Loading Feed...</p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
