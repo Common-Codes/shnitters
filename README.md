@@ -17,3 +17,5 @@ Open Source Twitter Platform with heavy JS reliability.
 - Most icons used from within Shnitters are hosted on `firebasestorage.googleapis.com`, stored as either `.png`, `.jpg` or `.webp`, but served as `webp` images. These images are licensed under the same License and apply to the same ToS as Shnitters. *Yes, you can freely use them on your own Shnitters frontend*
 
 **Not only do we allow our users to create a custom frontend, we *recommend* it.**
+
+### [Self-Host Guide (in the works)](https://github.com/Common-Codes/self-host-monorepo/tree/main/shnitters)
