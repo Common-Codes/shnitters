@@ -7,11 +7,13 @@ let handle = ``
 let image = ``
 let xyzname = ``
 let veryvery = ``
+let replito = ``
 
 if(post != null){
     store.collection("status").doc(post).get().then(doc => {
         const leg = doc.data();
         document.title = `${leg.handle}'s Post | Shnitters`
+        replito = `${leg.handle}`
         document.getElementById("poweradwe").innerHTML += `
         <br>
         <div style="border: 3px solid; position: realative; right: 0;">
@@ -22,15 +24,37 @@ if(post != null){
                 <p style="width: 8%; color: gray; position: relative; top: -90px; left: 78%;">${leg.date}</p>
             </div>
             <div style="position: relative;">
-                <pre style="width: 86.6%; cursor: default; position: relative; left: 10px; white-space: pre-wrap;">${leg.content}</pre>
+                <pre style="width: 86.6%; cursor: default; position: relative; left: 10px;">${leg.content}</pre>
             </div>
             <div class="logged-in" style="position: relative; overflow: hidden;" id="fancy-icons">
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${doc.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/comment.png?alt=media&token=aef99c51-74c5-4482-9233-ce7524c3dfbc&format=webp" style="height: 18px; width: 18px;"> Conversation</div>
+                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" href="#" class="modal-trigger" data-target="modal-reply"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
+                <div id="showsumluv" style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="loveFunction()"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
             </div>
         </div>
         `;
+    });
+
+    store.collection("status").doc(`${post}`).collection("comments").get().then((querySnaphot) => {
+        querySnaphot.forEach((doc) => {
+            const nob = doc.data();
+            const comments = `
+            <br>
+            <div style="border: 3px solid; position: realative; right: 0;">
+                <div style="position: relative; top: 6px; left: 10px; width: 100%;">
+                    <img src="${nob.image}" style="position: relative; top: 10px; left: 12px; width: 32px; height: 32px; border-radius: 50%;">
+                    <p onclick="location.href='/u/?u=${nob.handle}';" style="width: 10%; cursor: pointer; position: relative; top: -40px; left: 51px;">${nob.username}</p>
+                    <p style="width: 10%; font-size: 10px; position: relative; top: -49px; left: 52px; cursor: default;">Replying to ${nob.replying}</p>${nob.very}
+                    <p style="width: 8%; color: gray; position: relative; top: -90px; left: 78%;">${nob.date}</p>
+                </div>
+                <div style="position: relative;">
+                    <pre style="width: 86.6%; cursor: default; position: relative; left: 10px;">${nob.content}</pre>
+                    <br>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("pistakes").innerHTML += comments;
+        })
     });
 }
 
