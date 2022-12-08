@@ -60,7 +60,7 @@ postForm.addEventListener('submit', (e) => {
     */
     e.preventDefault();
 
-    // this changes raw HTML to it's respective HTML Entities
+    // this changes raw HTML to it's respective HTML Entities before posting
     
     const strung = convertHTML(postForm['post'].value);
 
@@ -77,6 +77,35 @@ postForm.addEventListener('submit', (e) => {
         postForm.reset();
     }).catch(err => {
         document.getElementById('create-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
+    })
+})
+
+const replyForm = document.querySelector('#reply-form');
+replyForm.addEventListener('submit', (e) => {
+    const d = new Date();
+    /*  TO NOTE: as mentioned above, I don't know anything about formatting JS Dates.
+        If you have a fix, please make a PR at https://codeberg.org/Common-Codes/Shnitters/pulls
+    */
+    e.preventDefault();
+
+    // this changes raw HTML to it's respective HTML Entities before posting
+    
+    const strung = convertHTML(replyForm['replyc'].value);
+
+    store.collection('status').doc(post).collection("comments").add({
+        content: strung,
+        handle: handle,
+        image: image,
+        username: xyzname,
+        very: veryvery,
+        date: d.toDateString(),
+        replying: replito
+    }).then(() => {
+        const modal = document.querySelector('#modal-reply');
+        M.Modal.getInstance(modal).close();
+        postForm.reset();
+    }).catch(err => {
+        document.getElementById('reply-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
     })
 })
 
