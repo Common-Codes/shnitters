@@ -7,38 +7,45 @@ let xyzname = ``
 let veryvery = ``
 
 
-var tweetsRef = firebase.firestore().collection('status');
+var postsRef = firebase.firestore().collection('status');
 
-var query = tweetsRef.orderBy('timestamp', 'desc');
+var query = postsRef.orderBy('timestamp', 'desc');
 
 query.onSnapshot(function(snapshot) {
-  var tweets = snapshot.docs.map(function(tweet) {
-    return tweet.data();
+  var posts = snapshot.docs.map(function(post) {
+    return post.data();
   });
 
-  document.getElementById('tweets').innerHTML = '';
+  document.getElementById('feed').innerHTML = '';
 
-  tweets.forEach(function(tweet) {
-    var tweetElement = `
+  posts.forEach(function(post) {
+    var postElement = `
     <br>
-        <div style="border: 3px solid; position: realative; right: 0;">
+        <div style="border: 3px solid; position: realative; right: 0;" id="${post.id}">
             <div style="position: relative; top: 6px; left: 10px; width: 100%;">
-                <img src="${tweet.image}" style="position: relative; top: 10px; left: 12px; width: 32px; height: 32px; border-radius: 50%;">
-                <p onclick="location.href='/u/?u=${tweet.handle}';" style="width: 10%; cursor: pointer; position: relative; top: -40px; left: 51px;">${tweet.username}</p>
-                <p onclick="location.href='/u/?u=${tweet.handle}';" style="width: 10%; color: gray; font-size: 10px; position: relative; top: -49px; left: 52px; cursor: pointer;">${tweet.handle}</p>${tweet.very}
-                <p style="width: 8%; color: gray; position: relative; top: -90px; left: 78%;">${tweet.date}</p>
+                <img src="${post.image}" style="position: relative; top: 10px; left: 12px; width: 32px; height: 32px; border-radius: 50%;">
+                <p onclick="location.href='/u/?u=${post.handle}';" style="width: 10%; cursor: pointer; position: relative; top: -40px; left: 51px;">${post.username}</p>
+                <p onclick="location.href='/u/?u=${post.handle}';" style="width: 10%; color: gray; font-size: 10px; position: relative; top: -49px; left: 52px; cursor: pointer;">${post.handle}</p>${post.very}
+                <p style="width: 8%; color: gray; position: relative; top: -90px; left: 78%;">${post.date}</p>
             </div>
             <div style="position: relative;">
-                <pre style="width: 86.6%; cursor: default; position: relative; left: 10px; white-space: pre-wrap;">${tweet.content}</pre>
+                <pre style="width: 86.6%; cursor: default; position: relative; left: 10px; white-space: pre-wrap;">${post.content}</pre>
             </div>
             <div class="logged-in" style="position: relative; overflow: hidden;" id="fancy-icons">
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${tweet.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${tweet.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
-                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${tweet.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/comment.png?alt=media&token=aef99c51-74c5-4482-9233-ce7524c3dfbc&format=webp" style="height: 18px; width: 18px;"> Conversation</div>
+                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${post.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
+                <div id="love-count-${post.id}" style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="addLove('${post.id}')"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> ${post.likes} Love</div>
+                <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="location.href='/status/?p=${post.id}';"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/comment.png?alt=media&token=aef99c51-74c5-4482-9233-ce7524c3dfbc&format=webp" style="height: 18px; width: 18px;"> Conversation</div>
             </div>
         </div>
     `;
-    document.getElementById('tweets').innerHTML += (tweetElement);
+    document.getElementById('feed').innerHTML += postElement;
+
+    const userId = firebase.auth().currentUser.uid
+    if (post.authorId === userId) {
+        var editButton = `<button onclick="showEditpostForm(${post.id});">Edit</button>`
+        postElement.innerHTML += editButton;
+      }
+
   });
 });
 
