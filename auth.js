@@ -70,7 +70,8 @@ postForm.addEventListener('submit', (e) => {
         image: image,
         username: xyzname,
         very: veryvery,
-        date: d.toDateString()
+        date: d.toDateString(),
+        timestamp: d
     }).then(() => {
         const modal = document.querySelector('#modal-create');
         M.Modal.getInstance(modal).close();
