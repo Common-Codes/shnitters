@@ -71,8 +71,12 @@ postForm.addEventListener('submit', (e) => {
         username: xyzname,
         very: veryvery,
         date: d.toDateString(),
-        timestamp: d.getTime()
-    }).then(() => {
+        timestamp: d.getTime(),
+        authorID: firebase.auth().currentUser.uid
+    }).then(function(docRef) {
+      docRef.update({
+        id: docRef.id
+      });
         const modal = document.querySelector('#modal-create');
         M.Modal.getInstance(modal).close();
         postForm.reset();
@@ -82,33 +86,41 @@ postForm.addEventListener('submit', (e) => {
 })
 
 const replyForm = document.querySelector('#reply-form');
-replyForm.addEventListener('submit', (e) => {
-    const d = new Date();
-    /*  TO NOTE: as mentioned above, I don't know anything about formatting JS Dates.
-        If you have a fix, please make a PR at https://codeberg.org/Common-Codes/Shnitters/pulls
-    */
-    e.preventDefault();
-
-    // this changes raw HTML to it's respective HTML Entities before posting
-    
-    const strung = convertHTML(replyForm['replyc'].value);
-
-    store.collection('status').doc(post).collection("comments").add({
-        content: strung,
-        handle: handle,
-        image: image,
-        username: xyzname,
-        very: veryvery,
-        date: d.toDateString(),
-        replying: replito
-    }).then(() => {
-        const modal = document.querySelector('#modal-reply');
-        M.Modal.getInstance(modal).close();
-        postForm.reset();
-    }).catch(err => {
-        document.getElementById('reply-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
-    })
-})
+if(replyForm){
+  replyForm.addEventListener('submit', (e) => {
+      const d = new Date();
+      /*  TO NOTE: as mentioned above, I don't know anything about formatting JS Dates.
+          If you have a fix, please make a PR at https://codeberg.org/Common-Codes/Shnitters/pulls
+      */
+      e.preventDefault();
+  
+      // this changes raw HTML to it's respective HTML Entities before posting
+      
+      const strung = convertHTML(replyForm['replyc'].value);
+  
+      store.collection('status').doc(post).collection("comments").add({
+          content: strung,
+          handle: handle,
+          image: image,
+          username: xyzname,
+          very: veryvery,
+          date: d.toDateString(),
+          replying: replito,
+          authorID: firebase.auth().currentUser.uid
+      }).then(function(docRef) {
+          docRef.update({
+            id: docRef.id
+          });
+          const modal = document.querySelector('#modal-reply');
+          M.Modal.getInstance(modal).close();
+          postForm.reset();
+      }).catch(err => {
+          document.getElementById('reply-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
+      })
+  })
+} else {
+  console.log("nope")
+}
 
 const logout = document.querySelector('#logout');
 logout.addEventListener('click', (e) => {
