@@ -71,7 +71,7 @@ postForm.addEventListener('submit', (e) => {
         username: xyzname,
         very: veryvery,
         date: d.toDateString(),
-        timestamp: d
+        timestamp: d.getTime()
     }).then(() => {
         const modal = document.querySelector('#modal-create');
         M.Modal.getInstance(modal).close();
