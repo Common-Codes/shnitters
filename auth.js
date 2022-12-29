@@ -119,7 +119,7 @@ if(replyForm){
       })
   })
 } else {
-  console.log("nope")
+  console.warn("no reply input")
 }
 
 const logout = document.querySelector('#logout');
