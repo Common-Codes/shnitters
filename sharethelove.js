@@ -25,7 +25,6 @@ function addLove(postId) {
             likes: firebase.firestore.FieldValue.increment(-1),
             likers: firebase.firestore.FieldValue.arrayRemove(userId)
             });
-            console.log(postId)
             document.getElementById(`like-count-${postId}`).innerHTML = `<img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> ${likeCount} Love`;
         } else {
             // The user has not liked the post, add their like
@@ -33,7 +32,6 @@ function addLove(postId) {
             likes: firebase.firestore.FieldValue.increment(1),
             likers: firebase.firestore.FieldValue.arrayUnion(userId)
             });
-            console.log(postId)
             document.getElementById(`love-count-${postId}`).innerHTML = `<img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/loved.png?alt=media&token=62987192-d635-4e4d-b8d8-0a954c20e406&format=webp" style="height: 18px; width: 18px;"> ${likeCount} Loved`;
         }
         } else {
