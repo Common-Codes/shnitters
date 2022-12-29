@@ -6,20 +6,69 @@ let image = ``
 let xyzname = ``
 let veryvery = ``
 
+const POSTS_PER_PAGE = 5;
 
-var postsRef = firebase.firestore().collection('status');
+let lastVisiblePost = null;
 
-var query = postsRef.orderBy('timestamp', 'desc');
+let morePostsAvailable = true;
 
-query.onSnapshot(function(snapshot) {
-  var posts = snapshot.docs.map(function(post) {
-    return post.data();
-  });
+function debounce(func, wait, immediate) {
+    let timeout;
+    return function() {
+      const context = this, args = arguments;
+      const later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      const callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  };
 
-  document.getElementById('feed').innerHTML = '';
+const debouncedGetPosts = debounce(getPosts, 500);
 
-  posts.forEach(function(post) {
-    var postElement = `
+
+getPosts();
+
+window.addEventListener('scroll', function() {
+    const scrollDistance = window.scrollY + window.innerHeight;
+    const totalHeight = document.body.scrollHeight;
+    if (scrollDistance / totalHeight > 0.8 && morePostsAvailable) {
+        debouncedGetPosts();
+    }
+});
+    function getPosts() {
+      const postsRef = firebase.firestore().collection('status');
+    
+      let query = postsRef
+        .orderBy('timestamp', 'desc')
+        .limit(POSTS_PER_PAGE);
+    
+      if (lastVisiblePost) {
+        query = query.startAfter(lastVisiblePost);
+      }
+    
+      query.onSnapshot(function(snapshot) {
+        // Check if there are more posts available to load
+        if (snapshot.size < POSTS_PER_PAGE) {
+            morePostsAvailable = false;
+        }
+        var posts = snapshot.docs.map(function(post) {
+          return post.data();
+        });
+    
+        posts.forEach(function(post) {
+          addPostToPage(post);
+        });
+    
+        lastVisiblePost = snapshot.docs[snapshot.docs.length - 1];
+      });
+    }
+    
+    function addPostToPage(post) {
+      var postElement = `
     <br>
         <div style="border: 3px solid; position: realative; right: 0;" id="${post.id}">
             <div style="position: relative; top: 6px; left: 10px; width: 100%;">
@@ -46,8 +95,7 @@ query.onSnapshot(function(snapshot) {
         postElement.innerHTML += editButton;
       }
 
-  });
-});
+  };
 
 const setupUI = (user) => {
     if(user){
