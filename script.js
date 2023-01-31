@@ -88,12 +88,14 @@ window.addEventListener('scroll', function() {
         </div>
     `;
     document.getElementById('feed').innerHTML += postElement;
-
-    const userId = firebase.auth().currentUser.uid
-    if (post.authorId === userId) {
-        var editButton = `<button onclick="showEditpostForm(${post.id});">Edit</button>`
-        postElement.innerHTML += editButton;
+    
+    const userObj = firebase.auth().currentUser
+    if(userObj != null){
+      if (post.authorId === userObj.uid) {
+          var editButton = `<button onclick="showEditpostForm(${post.id});">Edit</button>`
+          postElement.innerHTML += editButton;
       }
+    }
 
   };
 
