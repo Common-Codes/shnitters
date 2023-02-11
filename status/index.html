@@ -12,9 +12,9 @@
     <meta property="og:description" content="Status | Shnitters - Free Open Source Message and Content Sharing!">
     <link rel="icon" type="image/x-icon" href="https://cdn.discordapp.com/attachments/1019547103443292180/1040231079199658024/1668080519-picsay.png?format=webp">
     <title>Shnitters</title>
-    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script>
         const firebaseConfig = {
@@ -29,7 +29,7 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const store = firebase.firestore();
-    store.settings({ timestampsInSnapshots: true });
+    // Worth noting: Firebase Firestore allows some really strict rules, meaning that only YOU can read YOUR personal data.
     </script>
 </head>
 <body class="black" style="background-color: black; color: whitesmoke;">
@@ -111,7 +111,11 @@
       <div id="modal-account" class="modal grey darken-4">
         <div class="modal-content center-align">
           <h4>Account Info</h4><br /><br />
-          <div class="account-details"></div><br /><br />
+          <div class="account-details"></div><br /><hr>
+          <div id="modify-account">
+            <b style="color: blue; margin-top: -40px;" title="These Features are still a Work In Progress">BETA</b><br>
+            <button class="btn cyan darken-4 modal-trigger" data-target="modal-reauth">Modify Account</button>
+          </div>
         </div>
       </div>
 
@@ -139,6 +143,43 @@
           <button class="btn cyan darken-4 z-depth-1">Reply</button>
         </form>
       </div>
+  </div>
+
+  <div id="modal-reauth" class="modal grey darken-4">
+    <div class="modal-content">
+      <h4>Re-Authorise Access to your Account</h4><br />
+      <p id="rerrtext">Let's verify it's you before attempting to modify your account</p>
+      <form id="reauth-form">
+        <div class="input-field">
+          <input style="color: whitesmoke;" type="password" id="reauth-password" required />
+          <label for="reauth-password">Confirm your password</label>
+        </div>
+        <div class="modal-content">
+          <p style="color: red;">By modifying your account, you agree that we cannot in any way revert such change. Your permalink (the one to your account) may permanently change.<br>By continuing this operation, you're also agreeing to our <span style="text-decoration: underline;  cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Terms of Service</span> and <span style="text-decoration: underline; cursor: pointer;" onclick="location.href = 'https://codeberg.org/Common-Codes/Shnitters';">Privacy Policy</span>.<br>Your posts may stay visible under your previous account details due to server-side caching.</p>
+        </div>
+        <button class="btn btn-primary z-depth-0">Authenticate</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="modal-modify" class="modal grey darken-4">
+    <div class="modal-content">
+      <h4>Modify Account</h4><br />
+      <form id="updata">
+        <b>Use this form to change various aspects of your account.</b>
+        <p>Change profile picture. Use this to... change your profile picture. Has to be a valid image URL or it won't work.</p>
+        <div class="input-field">
+          <input style="color: whitesmoke;" type="url" id="modify-picture"/>
+          <label for="modify-picture">Submit new image</label>
+        </div>
+        <p>Payload URL. Use this to send payloads to a specific webhook. Kinda like automated updates. Leave blank to remove.</p>
+        <div class="input-field">
+          <input style="color: whitesmoke;" type="url" id="modify-payload"/>
+          <label for="modify-payload">Enter payload URL</label>
+        </div>
+        <button class="btn btn-primary z-depth-0">save changes</button>
+      </form>
+    </div>
   </div>
 
     <div id="poweradwe" style="position: absolute; top: 7.6%; right: 9px; width: 95%;"></div>

@@ -149,6 +149,26 @@
       </div>
     </div>
 
+    <div id="modal-modify" class="modal grey darken-4">
+      <div class="modal-content">
+        <h4>Modify Account</h4><br />
+        <form id="updata">
+          <b>Use this form to change various aspects of your account.</b>
+          <p>Change profile picture. Use this to... change your profile picture. Has to be a valid image URL or it won't work.</p>
+          <div class="input-field">
+            <input style="color: whitesmoke;" type="url" id="modify-picture"/>
+            <label for="modify-picture">Submit new image</label>
+          </div>
+          <p>Payload URL. Use this to send payloads to a specific webhook. Kinda like automated updates. Leave blank to remove.</p>
+          <div class="input-field">
+            <input style="color: whitesmoke;" type="url" id="modify-payload"/>
+            <label for="modify-payload">Enter payload URL</label>
+          </div>
+          <button class="btn btn-primary z-depth-0">save changes</button>
+        </form>
+      </div>
+    </div>
+
     <div id="feed" style="position: absolute; top: 7.5%; right: 9px; width: 95%;"></div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="auth.js"></script>

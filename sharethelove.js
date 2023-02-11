@@ -1,3 +1,41 @@
+// Send a payload to the user's desired payload URL
+let payloader = ``;
+
+function sendPayload(data) {
+  console.log(payloader);
+  console.log(data);
+  if(payloader != undefined){
+    const loginVal = payloader;
+
+    var request = new XMLHttpRequest();
+
+    request.open("POST", loginVal);
+    try {
+        if(loginVal == "") throw "empty";
+    }
+    catch(err) {
+        window.alert("Alert: " + err);
+    }
+    request.setRequestHeader('Content-type', 'application/json');
+    var params = {
+        username: "Shnitters",
+        avatar_url: "https://tallerthanshort.github.io/ut3.ggpht/icons/shnitters.jpg",
+        content: `${handle} just posted on Shnitters!`,
+        embeds: [
+            {
+                "author": {
+                    "name": `${xyzname} has created a new post on Shnitters!`,
+                    "url": `https://shnitters.nl/status?p=${data}`,
+                    "icon_url": `${image}`
+                }
+            }
+        ]
+    }
+    request.send(JSON.stringify(params))
+  }
+}
+
+
 // Add a like to the given post
 function addLove(postId) {
     // Get a reference to the post in the Firestore database

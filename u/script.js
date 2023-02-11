@@ -18,7 +18,7 @@ if(nuser != null){
             <b style="width: 50%; cursor: default; position: relative; top: -36px; left: 36px;">${pro.username}</b>
             <p style="width: 50%; color: gray; font-size: 10px; position: relative; top: -48px; left: 101px;">${pro.handle}</p>
             <p id="flowzer" style="width: 50%; color: gray; position relative; top: -48px; left: 101px;">${pro.followers} Followers</p>
-            <button style="text-transform: uppercase; border: none; background-color: blue; color: white; width: 84px; height: 23px; font-weight: 550; cursor: pointer; position: relative; top: -93px; left: 69%;">follow</button>
+            <button style="text-transform: uppercase; border: none; background-color: #c90076; color: white; width: 84px; height: 23px; font-weight: 550; cursor: pointer; position: relative; top: -93px; left: 69%;">follow</button>
             `
         })
     });

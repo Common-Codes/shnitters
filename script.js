@@ -105,7 +105,8 @@ const setupUI = (user) => {
             handle = `${doc.data().handle}`;
             image = `${doc.data().pfp}`;
             xyzname = `${doc.data().username}`;
-            veryvery = `${doc.data().very}`
+            veryvery = `${doc.data().very}`;
+            payloader = `${doc.data().payload}`;
 
             const html = `
                 <div><img src="${doc.data().pfp}" title="Profile Image" style="height: 48px; width: 48px; border-radius: 50%;"></div>

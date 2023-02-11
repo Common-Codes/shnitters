@@ -14,7 +14,6 @@ e.preventDefault();
 
 const email = signupForm['signup-email'].value;
 const password = signupForm['signup-password'].value;
-const username = signupForm['signup-name'].value;
 
 auth.createUserWithEmailAndPassword(email, password).then(cred => {
   return store.collection('users').doc(cred.user.uid).set({
@@ -59,8 +58,6 @@ postForm.addEventListener('submit', (e) => {
         If you have a fix, please make a PR at https://codeberg.org/Common-Codes/Shnitters/pulls
     */
     e.preventDefault();
-
-    // this changes raw HTML to it's respective HTML Entities before posting
     
     const strung = convertHTML(postForm['post'].value);
 
@@ -80,6 +77,7 @@ postForm.addEventListener('submit', (e) => {
         const modal = document.querySelector('#modal-create');
         M.Modal.getInstance(modal).close();
         postForm.reset();
+        sendPayload(docRef.id);
     }).catch(err => {
         document.getElementById('create-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
     })
@@ -120,6 +118,57 @@ if(replyForm){
   })
 } else {
   console.warn("no reply input")
+}
+
+const reauthForm = document.querySelector('#reauth-form');
+if(reauthForm){
+  reauthForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const password = reauthForm['reauth-password'].value;
+    const user = firebase.auth().currentUser;
+    const credential = firebase.auth.EmailAuthProvider.credential(
+      user.email, 
+      password
+    );
+    user.reauthenticateWithCredential(credential).then(() => {
+      M.Modal.getInstance(document.querySelector('#modal-account')).close();
+      M.Modal.getInstance(document.querySelector('#modal-reauth')).close();
+      M.Modal.getInstance(document.querySelector('#modal-modify')).open();
+    }).catch((error) => {
+      document.getElementById("rerrtext").innerText = `ERROR: ${error}`;
+    });
+  });
+}
+
+const updateForm = document.querySelector('#updata');
+if(updateForm){
+  updateForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newPFP = updateForm['modify-picture'].value;
+    const newPayload = updateForm['modify-payload'].value;
+
+    let profile = ''
+    let payj = ''
+
+    if(newPFP){
+      profile = newPFP;
+    } else {
+      profile = image;
+    }
+
+    if(newPayload){
+      payj = newPayload
+    } else {
+      payj = ``;
+    }
+
+    store.collection('users').doc(firebase.auth().currentUser.uid).update({
+      payload: payj,
+      pfp: profile
+    });
+
+    setTimeout(function(){M.Modal.getInstance(document.querySelector('#modal-modify')).close(); updateForm.reset()}, 250)
+  })
 }
 
 const logout = document.querySelector('#logout');
