@@ -77,7 +77,7 @@ postForm.addEventListener('submit', (e) => {
         const modal = document.querySelector('#modal-create');
         M.Modal.getInstance(modal).close();
         postForm.reset();
-        sendPayload(docRef.id);
+        sendPayload(docRef.id, strung);
     }).catch(err => {
         document.getElementById('create-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
     })

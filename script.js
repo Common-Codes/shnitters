@@ -71,7 +71,7 @@ window.addEventListener('scroll', function() {
       var postElement = `
     <br>
         <div style="border: 3px solid; position: realative; right: 0;" id="${post.id}">
-            <div style="position: relative; top: 6px; left: 10px; width: 100%;">
+            <div style="position: relative; top: 6px; left: 10px; width: 90%;">
                 <img src="${post.image}" style="position: relative; top: 10px; left: 12px; width: 32px; height: 32px; border-radius: 50%;">
                 <p onclick="location.href='/u/?u=${post.handle}';" style="width: 10%; cursor: pointer; position: relative; top: -40px; left: 51px;">${post.username}</p>
                 <p onclick="location.href='/u/?u=${post.handle}';" style="width: 10%; color: gray; font-size: 10px; position: relative; top: -49px; left: 52px; cursor: pointer;">${post.handle}</p>${post.very}

@@ -1,8 +1,8 @@
 // Send a payload to the user's desired payload URL
 let payloader = ``;
 
-function sendPayload(data) {
-  console.log(payloader);
+function sendPayload(data, content) {
+  console.log(content);
   console.log(data);
   if(payloader != undefined){
     const loginVal = payloader;
@@ -27,8 +27,9 @@ function sendPayload(data) {
                     "name": `${xyzname} has created a new post on Shnitters!`,
                     "url": `https://shnitters.nl/status?p=${data}`,
                     "icon_url": `${image}`
-                }
-            }
+                },
+                "description": content
+            },
         ]
     }
     request.send(JSON.stringify(params))
