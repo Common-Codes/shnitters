@@ -28,7 +28,7 @@ if(post != null){
             </div>
             <div class="logged-in" style="position: relative; overflow: hidden;" id="fancy-icons">
                 <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" href="#" class="modal-trigger" data-target="modal-reply"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
-                <div id="showsumluv" style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="addLove(${leg.id})"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
+                <div id="showsumluv" style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" onclick="addLove('${leg.id}')"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/like.png?alt=media&token=b212b954-864b-4e5f-9258-3f234863c3d6&format=webp" style="height: 18px; width: 18px;"> Love</div>
             </div>
         </div>
         `;
@@ -50,7 +50,9 @@ if(post != null){
                     </div>
                     <div style="position: relative;">
                         <pre style="width: 86.6%; cursor: default; position: relative; left: 10px; white-sapce: pre-wrap;">${nob.content}</pre>
-                        <br>
+                    </div>
+                    <div class="logged-in" style="position: relative; overflow: hidden;" id="fancy-icons">
+                        <div style="float: left; display: block; text-align: center; padding: 14px; text-decoration: none; cursor: pointer;" href="#" onclick="respond('${nob.username}')"><img src="https://firebasestorage.googleapis.com/v0/b/shnitters.appspot.com/o/reply.png?alt=media&token=5124acf4-60f7-4f53-bc6e-4803b534352d&format=webp" style="height: 18px; width: 18px;"> Reply</div>
                     </div>
                 </div>
             `;
@@ -67,7 +69,8 @@ const setupUI = (user) => {
             handle = `${doc.data().handle}`;
             image = `${doc.data().pfp}`;
             xyzname = `${doc.data().username}`;
-            veryvery = `${doc.data().very}`
+            veryvery = `${doc.data().very}`;
+            payloader = `${doc.data().payload}`
 
             const html = `
                 <div><img src="${doc.data().pfp}" title="Profile Image" style="height: 48px; width: 48px; border-radius: 50%;"></div>

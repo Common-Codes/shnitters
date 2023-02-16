@@ -1,4 +1,3 @@
-// Send a payload to the user's desired payload URL
 let payloader = ``;
 
 function sendPayload(data, content) {
@@ -85,4 +84,47 @@ function addLove(postId) {
       // The user is not signed in, show an error message
       console.error('User is not signed in');
     }
+  }
+
+  function respond(user) {
+    let targeter = ``;
+    store.collection("users").where("username", "==", user).get().then((querySnaphot) => {
+      querySnaphot.forEach((doc) => {
+        const pro = doc.data();
+        targeter = pro.handle;
+      })
+    })
+    const respForm = document.querySelector('#respond-form');
+
+    const modal = document.querySelector('#modal-respond');
+    M.Modal.getInstance(modal).open();
+
+    respForm.addEventListener('submit', (e) => {
+      const d = new Date();
+
+      e.preventDefault();
+
+      const strana = convertHTML(respForm['respondc'].value);
+
+      store.collection('status').doc(post).collection("comments").add({
+        content: strana,
+        handle: handle,
+        image: image,
+        username: xyzname,
+        very: veryvery,
+        date: d.toDateString(),
+        replying: targeter,
+        authorID: firebase.auth().currentUser.uid
+    }).then(function(docRef) {
+        docRef.update({
+          id: docRef.id
+        });
+        const modal = document.querySelector('#modal-respond');
+        M.Modal.getInstance(modal).close();
+        postForm.reset();
+    }).catch(err => {
+        document.getElementById('reply-form').innerHTML = `<div><b style="color: red;">${err}</b></div>`
+    })
+
+    })
   }
